@@ -13,18 +13,19 @@ class Task(BaseModel):
     completed: bool = False
 
 
-task = []
+tasks = []
 
 @app.post("/task/",response_model=Task)
 def create_task(task: Task):
     task.id = uuid4()
-    task.append(task)
+    tasks.append(task)
     return task
 
 
 @app.get("/tasks/",response_model=List[Task])
 def read_task():
-    return task
+    return tasks
+
 
 
 
