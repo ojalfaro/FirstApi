@@ -15,10 +15,16 @@ class Task(BaseModel):
 
 task = []
 
+@app.post("/task/",response_model=Task)
+def create_task(task: Task):
+    task.id = uuid4()
+    task.append(task)
+    return task
 
-@app.get("/")
-def read():
-    return {"hello":"world"}
+
+@app.get("/tasks/",response_model=List[Task])
+def read_task():
+    return task
 
 
 
