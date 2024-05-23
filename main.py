@@ -37,15 +37,16 @@ def read_task(task_id:UUID):
 def update_task(task_id:UUID,task_update:Task):
     for idx, task in enumerate(tasks):
         if task.id == task_id:
-            update_task = task.copy(update = task_update.dic(exlude_unset=True))
+            update_task = task.copy(update = task_update.dict(exlude_unset=True))
+            tasks[idx] = update_task
             return update_task
     return HTTPException(status_code=404,detail="task not found")
 
 @app.delete("/tasks/{task_id}",response_model=Task)
-def delete_task(task_id):
+def delete_task(task_id:UUID):
     for idx, task in enumerate(tasks):
         if task.id == task_id:
-            return task.pop(idx)
+            return tasks.pop(idx)
     return HTTPException(status_code=404,detail="task not found")
 
 
