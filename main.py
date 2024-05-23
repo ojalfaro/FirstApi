@@ -1,4 +1,4 @@
-from fastapi  import FastAPI
+from fastapi  import FastAPI,HTTPException
 from pydantic import BaseModel
 from typing import List,Optional
 from uuid import UUID,uuid4
@@ -23,8 +23,15 @@ def create_task(task: Task):
 
 
 @app.get("/tasks/",response_model=List[Task])
-def read_task():
+def read_tasks():
     return tasks
+
+@app.get("/tasks/{task_id}",response_model=Task)
+def read_task(task_id:UUID):
+    for task in tasks:
+        if task.id == task_id:
+            return task
+    return HTTPException(status_code=404,detail="task not found")
 
 
 
